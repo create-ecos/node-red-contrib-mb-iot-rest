@@ -4,12 +4,12 @@
         color: '#a5a5a5',
 		defaults: {
             name: {value:""},
-			protocol: { value: "HTTP", required: true },
-			host: { value: "", required: true },
+			protocol: { value: "HTTP", required: false },
+			host: { value: "", required: false },
 			port: { value: "", required: false },
-			tenant: { value: "", required: true },
-			authkey: { value: "", required: true },
-			template: { value: "", required: true }
+			tenant: { value: "", required: false },
+			authkey: { value: "", required: false },
+			template: { value: "", required: false }
 		},
         inputs:1,
         outputs:1,
