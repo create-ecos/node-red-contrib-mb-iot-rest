@@ -1,0 +1,72 @@
+<script type="text/javascript">
+    RED.nodes.registerType('node-red-contrib-mb-iot-rest',{
+        category: 'function',
+        color: '#a5a5a5',
+		defaults: {
+            name: {value:""},
+			protocol: { value: "HTTP", required: true },
+			host: { value: "", required: true },
+			port: { value: "", required: false },
+			tenant: { value: "", required: true },
+			authkey: { value: "", required: true },
+			template: { value: "", required: true }
+		},
+        inputs:1,
+        outputs:1,
+        icon: "mb.png",
+        label: function() {
+			return this.name||"mb-iot-rest-api";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="node-red-contrib-mb-iot-rest">
+	<div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+	<div class="form-row">
+		<label for="node-input-protocol"><i class="fa fa-globe"></i> Protocol</label>
+		<select type="text" id="node-input-protocol" placeholder="Protocol">
+        	<option value="HTTP">HTTP</option>
+        	<option value="HTTPS">HTTPS</option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-input-host"><i class="fa fa-globe"></i> Host</label>
+		<input type="text" id="node-input-host" placeholder="Host">
+	</div>
+	<div class="form-row">
+		<label for="node-input-port"><i class="fa fa-globe"></i> Port</label>
+		<input type="text" id="node-input-port" placeholder="Port">
+	</div>
+	<div class="form-row">
+		<label for="node-input-tenant"><i class="fa fa-building"></i> Tenant</label>
+		<input type="text" id="node-input-tenant" placeholder="Tenant">
+	</div>
+	<div class="form-row">
+		<label for="node-input-authkey"><i class="fa fa-key"></i> Authkey</label>
+		<input type="text" id="node-input-authkey" placeholder="Authkey">
+	</div>
+	<div class="form-row">
+		<label for="node-input-template"><i class="fa fa-tag"></i> テンプレート</label>
+		<input type="text" id="node-input-template" placeholder="テンプレート">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="node-red-contrib-mb-iot-rest">
+    <p>MotionBoardのリアルタイム連携 WebAPIを実行するノードです。</p>
+    <p>パラメータは次の通りです。</p>
+    <ul>
+    	<li><code>protocol</code> : HTTP or HTTPS(必須)</li>
+    	<li><code>host</code> : ホスト名(必須)</li>
+    	<li><code>port</code> : ポート番号</li>
+    	<li><code>tenant</code> : テナント名(必須)</li>
+    	<li><code>authkey</code> : リアルタイム連携の設定画面で生成した認証キー(必須)</li>
+    	<li><code>template</code> : リアルタイム連携の設定画面で指定したテンプレート名(必須)</li>
+    </ul>
+    <p>併せて、msg.bodyにbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb56/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
+    <p>パラメータはmsg.mbで同様に定義することができ、画面の設定よりも優先されます。</p>
+    <p>例 : <code>msg.mb = {protocol:'HTTPS', host:'localhost', port:'8787', tenant:'system', authkey:'xxx', template:'テンプレート名'}</code></p>
+</script>
+
