@@ -70,5 +70,5 @@ module.exports = function(RED) {
 		});
     }
     
-    RED.nodes.registerType('mb-iot-rest-api', MB_IOT_REST_API_NODE);
+    RED.nodes.registerType('node-red-contrib-mb-iot-rest', MB_IOT_REST_API_NODE);
 }
