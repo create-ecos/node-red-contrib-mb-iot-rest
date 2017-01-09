@@ -9,7 +9,7 @@
     "keywords": ["node-red","mb-iot-rest","IoT","MotionBoard"],
     "node-red"     : {
         "nodes": {
-            "mb-iot-rest": "node-red-contrib-mb-iot-rest.js"
+            "node-red-contrib-mb-iot-rest": "node-red-contrib-mb-iot-rest.js"
         }
     },
     "author": "ecos",
