@@ -61,10 +61,12 @@ module.exports = function(RED) {
 					console.log(body);
 					msg.payload = body;
 					node.send(msg);
+					context.done(null);
 				} else {
 					console.log('error: ' + body);
 					msg.payload = body;
 					node.send(msg);
+					context.done("Failed");
 				}
 			});
 		});
