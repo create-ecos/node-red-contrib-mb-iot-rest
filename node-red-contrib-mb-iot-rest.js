@@ -61,7 +61,7 @@ module.exports = function(RED) {
 					console.log(body);
 					msg.payload = body;
 					node.send(msg);
-					context.done(null);
+					context.succeed(null);
 				} else {
 					console.log('error: ' + body);
 					msg.payload = body;
