@@ -65,8 +65,25 @@
     	<li><code>authkey</code> : リアルタイム連携の設定画面で生成した認証キー(必須)</li>
     	<li><code>template</code> : リアルタイム連携の設定画面で指定したテンプレート名(必須)</li>
     </ul>
-    <p>併せて、msg.bodyにbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb56/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
-    <p>パラメータはmsg.mbで同様に定義することができ、画面の設定よりも優先されます。</p>
+    <p>パラメータはmsg.mbでも同様に定義することができ、画面の設定よりも優先されます。</p>
     <p>例 : <code>msg.mb = {protocol:'HTTPS', host:'localhost', port:'8787', tenant:'system', authkey:'xxx', template:'テンプレート名'}</code></p>
+    <p>併せて、msg.payload（またはmsg.body）にbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb56/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
+    <p></p>
+    <p>※シンプルモードについて</p>
+    <p>msg.simple === trueの場合に限り、bodyの記述を大部分省略できます（ただし、１レコードのみの送信に制限されます）。</p>
+    <p>msg.payloadに、bodyの代わりにステータス値の配列を設定してください。</p>
+    <p>例 : <code>msg.payload = [{name:'c1', type:'1', value: true},{name:'c2', type:'2', value: 111},{name:'c3', type:'3', value: 'abc'}]</code></p>
+    <p>以下の項目は自動的に値が埋められます。</p>
+    <ul>
+    	<li><code>body.loginId</code> : id + 実行日時のミリ秒</li>
+    	<li><code>body.name</code> : 'mbnode'固定</li>
+    	<li><code>body.version</code> : 実行日時のミリ秒</li>
+    	<li><code>body.template</code> : msg.mbあるいは画面で指定したテンプレート名</li>
+    	<li><code>body.retry</code> : true固定</li>
+    	<li><code>body.locations</code> : 空配列固定</li>
+    	<li><code>body.msg</code> : 空配列固定</li>
+    	<li><code>body.status.各要素.time</code> : 実行日時のミリ秒</li>
+    	<li><code>body.status.各要素.enabled</code> : true固定</li>
+    </ul>
 </script>
 

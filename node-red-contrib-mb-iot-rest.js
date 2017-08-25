@@ -13,7 +13,8 @@ module.exports = function(RED) {
         	var uniqueId = new Date().getTime().toString(16)+Math.floor(1000*Math.random()).toString(16);
         	var dispUserName = 'nodered';
         	urlBuilder.protocol = 'http:';
-        	urlBuilder.pathname = '/motionboard/rest/tracking/data/upload/public'
+			urlBuilder.pathname = '/motionboard/rest/tracking/data/upload/public'
+
         	if(msg.mb != null) {
         		if(msg.mb.protocol != null && msg.mb.protocol == 'HTTPS') {
         			urlBuilder.protocol = 'https:';
@@ -45,8 +46,34 @@ module.exports = function(RED) {
         			authkey : (config.authkey == null ? 'fill_authkey' : config.authkey),
         			template : (config.template == null ? 'fill_template' : config.template)
         		}
-        	}        	
-        	
+			}
+			
+			var b = {};
+			if(msg.simple != null && msg.simple) {
+				var millis = new Date().getTime();
+                b.loginId = 'id'+String(millis);
+				b.name = 'mbnode';
+				b.template = config.template;
+				b.version = millis;
+				b.retry = true;
+				b.locations = [];
+				b.msg = [];
+				b.status = [];
+				var statusValues = {
+					time : millis,
+					enabled : 'true',
+					values : msg.payload
+				}
+				b.status.push(statusValues);
+			} else {
+				//for backward compatibility
+				if(msg.body != null) {
+					b = msg.body;
+				} else {
+					b = msg.payload;
+				}
+			}
+
         	var optionsUrl = urlBuilder.format(urlBuilder);
         	var options = {
 				method: 'POST',
@@ -54,8 +81,9 @@ module.exports = function(RED) {
 				headers: {
 					'Content-type': 'application/json'
 				},
-				json: msg.body
+				json: b
 			};
+
 			request.post(options, function(error, response, body){
 				if (!error && response.statusCode == 200) {
 					console.log(body);
