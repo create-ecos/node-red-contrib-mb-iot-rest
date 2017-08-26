@@ -51,7 +51,11 @@ module.exports = function(RED) {
 			var b = {};
 			if(msg.simple != null && msg.simple) {
 				var millis = new Date().getTime();
-                b.loginId = 'id'+String(millis);
+				if(msg.loginId != null) {
+        	        b.loginId = msg.loginId;				
+				} else {
+        	        b.loginId = 'id'+String(millis);				
+				}
 				b.name = 'mbnode';
 				b.template = urlBuilder.query.template;
 				b.version = millis;

@@ -9,7 +9,7 @@
 			port: { value: "", required: false },
 			tenant: { value: "", required: false },
 			authkey: { value: "", required: false },
-			template: { value: "", required: false }
+			template: { value: "", required: false },
 		},
         inputs:1,
         outputs:1,
@@ -66,7 +66,7 @@
     	<li><code>template</code> : リアルタイム連携の設定画面で指定したテンプレート名(必須)</li>
     </ul>
     <p>パラメータはmsg.mbでも同様に定義することができ、画面の設定よりも優先されます。</p>
-    <p>例 : <code>msg.mb = {protocol:'HTTPS', host:'localhost', port:'8787', tenant:'system', authkey:'xxx', template:'テンプレート名'}</code></p>
+    <p>例 : <code>msg.mb = {protocol:'HTTPS', host:'localhost', port:'8787', tenant:'system', authkey:'xxx', template:'テンプレート名', id:'ID'}</code></p>
     <p>併せて、msg.payload（またはmsg.body）にbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb56/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
     <p></p>
     <p>※シンプルモードについて</p>
@@ -84,6 +84,8 @@
     	<li><code>body.msg</code> : 空配列固定</li>
     	<li><code>body.status.各要素.time</code> : 実行日時のミリ秒</li>
     	<li><code>body.status.各要素.enabled</code> : true固定</li>
-    </ul>
+	</ul>
+	<p>またbody.loginIdのみ、msg.loginIdとして指定ができます。</p>
+    <p>例 : <code>msg.loginId = 'sensor123'</code></p>
 </script>
 

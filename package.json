@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-mb-iot-rest",
-    "version"      : "0.1.1",
+    "version"      : "0.2.0",
     "description"  : "A node-red node for calling MotionBoard Realtime WebAPI",
     "dependencies": {
 	"request": "~2.42.0",
