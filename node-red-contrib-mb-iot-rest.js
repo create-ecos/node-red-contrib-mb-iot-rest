@@ -53,7 +53,7 @@ module.exports = function(RED) {
 				var millis = new Date().getTime();
                 b.loginId = 'id'+String(millis);
 				b.name = 'mbnode';
-				b.template = config.template;
+				b.template = urlBuilder.query.template;
 				b.version = millis;
 				b.retry = true;
 				b.locations = [];
@@ -74,7 +74,7 @@ module.exports = function(RED) {
 				}
 			}
 
-        	var optionsUrl = urlBuilder.format(urlBuilder);
+			var optionsUrl = urlBuilder.format(urlBuilder);
         	var options = {
 				method: 'POST',
 				url: optionsUrl,
