@@ -4,9 +4,7 @@
         color: '#a5a5a5',
 		defaults: {
             name: {value:""},
-			protocol: { value: "HTTP", required: false },
-			host: { value: "", required: false },
-			port: { value: "", required: false },
+			url: { value: "", required: false },
 			tenant: { value: "", required: false },
 			authkey: { value: "", required: false },
 			template: { value: "", required: false },
@@ -26,19 +24,8 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 	<div class="form-row">
-		<label for="node-input-protocol"><i class="fa fa-globe"></i> Protocol</label>
-		<select type="text" id="node-input-protocol" placeholder="Protocol">
-        	<option value="HTTP">HTTP</option>
-        	<option value="HTTPS">HTTPS</option>
-		</select>
-	</div>
-	<div class="form-row">
-		<label for="node-input-host"><i class="fa fa-globe"></i> Host</label>
-		<input type="text" id="node-input-host" placeholder="Host">
-	</div>
-	<div class="form-row">
-		<label for="node-input-port"><i class="fa fa-globe"></i> Port</label>
-		<input type="text" id="node-input-port" placeholder="Port">
+		<label for="node-input-url"><i class="fa fa-globe"></i> URL</label>
+		<input type="text" id="node-input-url" placeholder="URL">
 	</div>
 	<div class="form-row">
 		<label for="node-input-tenant"><i class="fa fa-building"></i> Tenant</label>
@@ -58,32 +45,36 @@
     <p>MotionBoardのリアルタイム連携 WebAPIを実行するノードです。</p>
     <p>パラメータは次の通りです。</p>
     <ul>
-    	<li><code>protocol</code> : HTTP or HTTPS(必須)</li>
-    	<li><code>host</code> : ホスト名(必須)</li>
-    	<li><code>port</code> : ポート番号</li>
+    	<li><code>url</code> : REST API用のURL</li>
     	<li><code>tenant</code> : テナント名(必須)</li>
     	<li><code>authkey</code> : リアルタイム連携の設定画面で生成した認証キー(必須)</li>
     	<li><code>template</code> : リアルタイム連携の設定画面で指定したテンプレート名(必須)</li>
     </ul>
     <p>パラメータはmsg.mbでも同様に定義することができ、画面の設定よりも優先されます。</p>
-    <p>例 : <code>msg.mb = {protocol:'HTTPS', host:'localhost', port:'8787', tenant:'system', authkey:'xxx', template:'テンプレート名', id:'ID'}</code></p>
-    <p>併せて、msg.payload（またはmsg.body）にbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb56/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
+    <p>例 : <code>msg.mb = {url:'http://localhost:8787/motionboard', tenant:'system', authkey:'xxx', template:'テンプレート名'}</code></p>
+    <p>併せて、msg.payloadにbodyが格納されている必要があります。フォーマットは<a href="https://manual.wingarc-support.com/manual/mb/mb57/" target="_blank">オンラインマニュアル</a>の「リアルタイム連携のWeb API」のページを参照してください。</p>
     <p></p>
     <p>※シンプルモードについて</p>
     <p>msg.simple === trueの場合に限り、bodyの記述を大部分省略できます（ただし、１レコードのみの送信に制限されます）。</p>
-    <p>msg.payloadに、bodyの代わりにステータス値の配列を設定してください。</p>
-    <p>例 : <code>msg.payload = [{name:'c1', type:'1', value: true},{name:'c2', type:'2', value: 111},{name:'c3', type:'3', value: 'abc'}]</code></p>
+    <p>msg.payloadに、bodyの代わりにステータス値、緯度経度からなるObjectを設定してください。</p>
+    <p>例1:（ステータス値を送信）<code>msg.payload = {c1:true, c2:123, c3:'abc'}</code></p>
+    <p>例2:（緯度経度を送信）<code>msg.payload = {lat:35.659304, lon:139.700467}</code></p>
+    <p>例3:（両方）<code>msg.payload = {c1:true, c2:123, c3:'abc', lat:35.659304, lon:139.700467}</code></p>
     <p>以下の項目は自動的に値が埋められます。</p>
     <ul>
     	<li><code>body.loginId</code> : id + 実行日時のミリ秒</li>
     	<li><code>body.name</code> : 'mbnode'固定</li>
     	<li><code>body.version</code> : 実行日時のミリ秒</li>
     	<li><code>body.template</code> : msg.mbあるいは画面で指定したテンプレート名</li>
-    	<li><code>body.retry</code> : true固定</li>
-    	<li><code>body.locations</code> : 空配列固定</li>
+		<li><code>body.retry</code> : true固定</li>
+    	<li><code>body.locations</code> : （msg.payload.lat, msg.payload.lonいずれか未指定時）空配列</li>		
+    	<li><code>body.locations.レコード.time</code> : （msg.payload.time未指定時）実行日時のミリ秒</li>
+    	<li><code>body.locations.レコード.uptime</code> : （msg.payload.uptime未指定時）実行日時のミリ秒</li>
+    	<li><code>body.locations.レコード.accuracy</code> : （msg.payload.accuracy未指定時）0</li>
     	<li><code>body.msg</code> : 空配列固定</li>
-    	<li><code>body.status.各要素.time</code> : 実行日時のミリ秒</li>
-    	<li><code>body.status.各要素.enabled</code> : true固定</li>
+    	<li><code>body.status</code> : （msg.payload.lat,lon,time,uptime,accuracy以外未指定時）空配列</li>
+    	<li><code>body.status.各ステータス.time</code> : （msg.payload.time未指定時）実行日時のミリ秒</li>
+    	<li><code>body.status.各ステータス.enabled</code> : true固定</li>
 	</ul>
 	<p>またbody.loginIdのみ、msg.loginIdとして指定ができます。</p>
     <p>例 : <code>msg.loginId = 'sensor123'</code></p>
